@@ -1,0 +1,6 @@
+outs:
+- md5: 01a89bb64a46a25acc69748634b7bc97.dir
+  size: 1366471277
+  nfiles: 5000
+  hash: md5
+  path: HAM10000_images_part_1

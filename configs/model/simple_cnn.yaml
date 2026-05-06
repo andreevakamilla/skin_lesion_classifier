@@ -1,0 +1,6 @@
+name: "simple_cnn"
+num_classes: 7
+pretrained: false
+dropout: 0.3
+freeze_backbone: false
+unfreeze_from: -2

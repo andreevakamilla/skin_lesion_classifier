@@ -1,0 +1,6 @@
+name: "efficientnet"
+num_classes: 7
+pretrained: true
+dropout: 0.3
+freeze_backbone: true
+unfreeze_from: -2

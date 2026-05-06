@@ -1,0 +1,14 @@
+batch_size: 32
+epochs_head: 5
+epochs_finetune: 20
+epochs_full: 10
+lr_head: 1.0e-3
+lr_finetune: 5.0e-4
+lr_full_backbone: 1.0e-5
+lr_full_head: 5.0e-5
+weight_decay: 1.0e-4
+focal_gamma: 3.0
+patience: 7
+min_delta: 0.001
+checkpoint_dir: "checkpoints"
+onnx_export_path: "checkpoints/model.onnx"

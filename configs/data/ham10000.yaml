@@ -1,0 +1,30 @@
+data_dir: "data"
+metadata_file: "data/HAM10000_metadata.csv"
+image_size: 224
+num_workers: 4
+pin_memory: true
+train_ratio: 0.70
+val_ratio: 0.15
+test_ratio: 0.15
+random_seed: 42
+use_weighted_sampler: false
+
+class_names:
+  - "akiec"
+  - "bcc"
+  - "bkl"
+  - "df"
+  - "mel"
+  - "nv"
+  - "vasc"
+
+augmentation:
+  horizontal_flip_prob: 0.5
+  vertical_flip_prob: 0.5
+  rotate_limit: 90
+  brightness_limit: 0.2
+  contrast_limit: 0.2
+  hue_shift_limit: 20
+  dropout_num_holes: 8
+  dropout_max_size: 32
+  gauss_noise_prob: 0.2

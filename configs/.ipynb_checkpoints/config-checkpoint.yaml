@@ -1,0 +1,8 @@
+defaults:
+  - data: ham10000
+  - model: efficientnet
+  - training: default
+  - logging: mlflow
+  - _self_
+
+project_name: skin-lesion-classifier
