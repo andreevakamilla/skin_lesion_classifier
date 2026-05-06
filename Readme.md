@@ -43,9 +43,9 @@ unzip skin-cancer-mnist-ham10000.zip -d data/
 ```
 
 ```bash
-mlflow server --host 127.0.0.1 --port 8080
+mlflow server --host 127.0.0.1 --port 8082
 ```
-
+В другом терминалн
 ```bash
 # Основная модель (EfficientNet-B1)
 python skin_lesion_classifier/training/train.py
