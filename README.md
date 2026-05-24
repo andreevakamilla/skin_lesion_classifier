@@ -10,7 +10,8 @@
 
 **Вход:** тензор изображения формата RGB размерности `[1, 3, 224, 224]` (batch, channels, height, width), нормализованный по статистикам ImageNet (mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]).
 
-Пример входного изображения из датасета: [ISIC_0024306.jpg](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000)
+Пример входного изображения из датасета: <img width="200" height="200" alt="image" src="https://github.com/user-attachments/assets/8cabc61f-c1c2-4022-be28-8fd19bd64ed4" />
+
 
 **Выход:** JSON со следующими полями:
 
