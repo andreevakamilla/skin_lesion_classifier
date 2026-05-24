@@ -116,7 +116,6 @@ class FocalLoss(nn.Module):
         return (focal_weight * ce_loss).mean()
 
 
-
 class SkinLesionModule(pl.LightningModule):
     """Lightning Module с поэтапной разморозкой."""
 
@@ -129,7 +128,9 @@ class SkinLesionModule(pl.LightningModule):
 
         self.model = self._build_model()
 
-        alpha = torch.tensor(class_weights, dtype=torch.float32) if class_weights is not None else None
+        alpha = (
+            torch.tensor(class_weights, dtype=torch.float32) if class_weights is not None else None
+        )
         self.criterion = FocalLoss(gamma=cfg.training.focal_gamma, alpha=alpha)
 
         self._current_stage = "head"
@@ -213,25 +214,27 @@ class SkinLesionModule(pl.LightningModule):
     def on_validation_epoch_end(self) -> None:
         if not self._val_preds:
             return
-    
+
         all_preds = np.concatenate(self._val_preds)
         all_labels = np.concatenate(self._val_labels)
         metrics = self._compute_metrics(all_preds, all_labels)
-    
+
         bal_acc = metrics["balanced_accuracy"]
-    
+
         self.log("val/accuracy", metrics["accuracy"], prog_bar=True, sync_dist=True)
         self.log("val/balanced_accuracy", bal_acc, prog_bar=True, sync_dist=True)
         self.log("val/macro_f1", metrics["macro_f1"], sync_dist=True)
         self.log("val/mel_recall", metrics["mel_recall"], sync_dist=True)
         self.log("val/nv_recall", metrics["nv_recall"], sync_dist=True)
-    
+
         if bal_acc > getattr(self, "_best_bal_acc", 0.0):
             self._best_bal_acc = bal_acc
-            ckpt_path = f"checkpoints/manual_best_epoch={self.current_epoch}_bal_acc={bal_acc:.4f}.ckpt"
+            ckpt_path = (
+                f"checkpoints/manual_best_epoch={self.current_epoch}_bal_acc={bal_acc:.4f}.ckpt"
+            )
             self.trainer.save_checkpoint(ckpt_path)
             print(f"\n[BEST] Новый лучший: {bal_acc:.4f} → {ckpt_path}")
-    
+
         self._val_preds.clear()
         self._val_labels.clear()
 
@@ -305,7 +308,7 @@ class SkinLesionModule(pl.LightningModule):
         dummy_input = torch.randn(1, 3, image_size, image_size).to(device)
         output_path_obj = Path(output_path)
         output_path_obj.parent.mkdir(parents=True, exist_ok=True)
-    
+
         torch.onnx.export(
             self.model,
             dummy_input,

@@ -1,5 +1,5 @@
-import mlflow
 import matplotlib.pyplot as plt
+import mlflow
 
 mlflow.set_tracking_uri("http://127.0.0.1:8082")
 client = mlflow.tracking.MlflowClient()

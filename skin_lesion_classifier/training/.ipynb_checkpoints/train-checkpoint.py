@@ -2,6 +2,8 @@ import glob
 import subprocess
 
 import hydra
+import mlflow
+import onnx
 import pytorch_lightning as pl
 from omegaconf import DictConfig
 from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
@@ -45,9 +47,7 @@ def train(cfg: DictConfig) -> None:
         tracking_uri=cfg.logging.mlflow_tracking_uri,
         log_model=True,
     )
-    mlflow_logger.experiment.set_tag(
-        mlflow_logger.run_id, "git_commit", get_git_commit_id()
-    )
+    mlflow_logger.experiment.set_tag(mlflow_logger.run_id, "git_commit", get_git_commit_id())
 
     checkpoint_callback = ModelCheckpoint(
         dirpath=cfg.training.checkpoint_dir,
@@ -66,9 +66,7 @@ def train(cfg: DictConfig) -> None:
     )
 
     total_epochs = (
-        cfg.training.epochs_head
-        + cfg.training.epochs_finetune
-        + cfg.training.epochs_full
+        cfg.training.epochs_head + cfg.training.epochs_finetune + cfg.training.epochs_full
     )
     trainer = pl.Trainer(
         max_epochs=total_epochs,
@@ -93,6 +91,14 @@ def train(cfg: DictConfig) -> None:
 
     best_model = SkinLesionModule.load_from_checkpoint(best_ckpt, cfg=cfg)
     best_model.export_onnx(cfg.training.onnx_export_path, image_size=cfg.data.image_size)
+
+    mlflow.set_tracking_uri(cfg.logging.mlflow_tracking_uri)
+    with mlflow.start_run(run_id=mlflow_logger.run_id, nested=True):
+        mlflow.onnx.log_model(
+            onnx_model=onnx.load(cfg.training.onnx_export_path),
+            artifact_path="onnx_model",
+        )
+        print("[MLFLOW] ONNX модель залогирована")
 
 
 if __name__ == "__main__":

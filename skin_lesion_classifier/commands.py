@@ -3,6 +3,7 @@ import fire
 
 def train() -> None:
     from skin_lesion_classifier.training.train import train as _train
+
     _train()
 
 

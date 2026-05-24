@@ -21,8 +21,7 @@ def download_data(data_dir: str = "data") -> None:
     data_path.mkdir(parents=True, exist_ok=True)
 
     metadata_url = (
-        "https://dataverse.harvard.edu/api/access/datafile/"
-        "3172582?format=original&gbrecs=true"
+        "https://dataverse.harvard.edu/api/access/datafile/" "3172582?format=original&gbrecs=true"
     )
     metadata_dest = data_path / "HAM10000_metadata.csv"
 
@@ -161,9 +160,7 @@ def stratified_group_split(
     df_train_val = dataframe.iloc[train_val_idx]
     val_relative = val_ratio / (train_ratio + val_ratio)
 
-    splitter_val = GroupShuffleSplit(
-        n_splits=1, test_size=val_relative, random_state=random_seed
-    )
+    splitter_val = GroupShuffleSplit(n_splits=1, test_size=val_relative, random_state=random_seed)
     labels_tv = df_train_val["label"].values
     groups_tv = df_train_val["lesion_id"].values
     train_idx_rel, val_idx_rel = next(splitter_val.split(df_train_val, labels_tv, groups_tv))
@@ -211,9 +208,7 @@ class HAM10000DataModule(pl.LightningDataModule):
             random_seed=self.cfg.random_seed,
         )
 
-    def _make_loader(
-        self, dataframe: pd.DataFrame, is_train: bool = False
-    ) -> DataLoader:
+    def _make_loader(self, dataframe: pd.DataFrame, is_train: bool = False) -> DataLoader:
         transform = (
             get_train_transforms(self.cfg.image_size, self.cfg.augmentation)
             if is_train
