@@ -1,4 +1,6 @@
 [core]
-    remote = myremote
-['remote "myremote"']
-    url = /tmp/dvc-storage
+    remote = data-remote
+['remote "data-remote"']
+    url = gdrive://1OANLAb2aapVQFoi2ajfWBoyaJ9k4ForJ
+['remote "model-remote"']
+    url = /tmp/dvc-model-storage
