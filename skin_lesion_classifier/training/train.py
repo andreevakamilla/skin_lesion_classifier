@@ -30,6 +30,7 @@ def get_git_commit_id() -> str:
 @hydra.main(version_base=None, config_path="../../configs", config_name="config")
 def train(cfg: DictConfig) -> None:
     """Полный пайплайн обучения: данные, модель, логирование, тест, ONNX экспорт."""
+    subprocess.run(["dvc", "pull"], check=False)
     pl.seed_everything(cfg.data.random_seed, workers=True)
 
     data_module = HAM10000DataModule(cfg.data)
