@@ -24,7 +24,7 @@ def preprocess_image(image_path: Union[str, Path], image_size: int = 224) -> np.
     std = np.array(IMAGENET_STD, dtype=np.float32)
     image_array = (image_array - mean) / std
 
-    return image_array.transpose(2, 0, 1)[np.newaxis]  # [1, 3, H, W]
+    return image_array.transpose(2, 0, 1)[np.newaxis]
 
 
 def softmax(logits: np.ndarray) -> np.ndarray:
