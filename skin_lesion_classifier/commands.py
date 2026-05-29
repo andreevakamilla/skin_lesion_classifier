@@ -1,9 +1,13 @@
+import subprocess
+
 import fire
+
+from skin_lesion_classifier.data.dataset import download_data as _download
+from skin_lesion_classifier.inference.predictor import SkinLesionPredictor
+from skin_lesion_classifier.training.train import train as _train
 
 
 def train() -> None:
-    from skin_lesion_classifier.training.train import train as _train
-
     _train()
 
 
@@ -12,7 +16,8 @@ def infer(
     onnx_model: str = "checkpoints/model.onnx",
     image_size: int = 224,
 ) -> None:
-    from skin_lesion_classifier.inference.predictor import SkinLesionPredictor
+
+    subprocess.run(["dvc", "pull"], check=False)
 
     predictor = SkinLesionPredictor(onnx_path=onnx_model, image_size=image_size)
     result = predictor.predict(image)
@@ -26,8 +31,6 @@ def infer(
 
 
 def download_data(data_dir: str = "data") -> None:
-    from skin_lesion_classifier.data.dataset import download_data as _download
-
     _download(data_dir)
 
 
