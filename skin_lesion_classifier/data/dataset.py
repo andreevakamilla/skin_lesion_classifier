@@ -169,7 +169,6 @@ def stratified_group_split(
     df_val = dataframe.iloc[train_val_idx[val_idx_rel]].reset_index(drop=True)
     df_test = dataframe.iloc[test_idx].reset_index(drop=True)
 
-    # Проверяем отсутствие утечки
     train_lesions = set(df_train["lesion_id"])
     assert not (train_lesions & set(df_val["lesion_id"])), "Утечка train-val!"
     assert not (train_lesions & set(df_test["lesion_id"])), "Утечка train-test!"
